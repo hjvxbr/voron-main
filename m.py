@@ -75,9 +75,9 @@ background = pygame.transform.scale(pygame.image.load(
     "thespace.jpg"), (win_width, win_height))
 
 # Персонажі гри:
-player = Player('player.png', 5, win_height - 80, 4)
+player = Player('pngwing.com (2).png', 5, win_height - 80, 4)
 monster = Enemy('qwer.png', win_width - 80, 280, 2)
-final = GameSprite('meat.png', win_width - 120, win_height - 80, 0)
+final = GameSprite('akym.png', win_width - 120, win_height - 80, 0)
 
 # стіни
 w1 = Wall(154, 205, 50, 80, 80, 10, 500)
@@ -197,7 +197,10 @@ playerW = False
 playerS = False
 playerA = False
 playerD = False
-player1 = Player('pngwing.com.png', 5, win_height - 80, 4)
+player1 = Player('pngwing.com (2).png', 5, win_height - 80, 4)
+monster1 = Enemy('monster.png', win_width - 80, 280, 2)
+final1 = GameSprite('motor.png', win_width - 120, win_height - 80, 0)
+kick1 = pygame.mixer.Sound('kick.ogg')
 while True:
     window2.blit(background2, (0,0))
     
@@ -215,13 +218,19 @@ while True:
             if event.key == pygame.K_s:
                 playerS = False
     if playerW:
-        player1.rect.y -= 5
+        player1.rect.y -= 10
     if playerS:
-        player1.rect.y += 5
+        player1.rect.y += 10
     
+    if player1.rect.x < 5:
+        player1.rect.x = player1.rect.x
     player1.update()
-
+    final1.update()
+    monster1.update()
     player1.reset()
+    final1.reset()
+    monster1.reset()
+
     w1 = Wall(154, 205, 50, 80, 80, 10, 500)
     w2 = Wall(154, 205, 50, 80, 480, 450, 10)
     w3 = Wall(154, 205, 50, 180, 400, 350, 10)
@@ -250,7 +259,8 @@ while True:
     w12.draw_wall()
     w13.draw_wall()
     
-    if (pygame.sprite.collide_rect(player1, monster) or 
+    if (pygame.sprite.collide_rect(player1, final1,) or 
+        pygame.sprite.collide_rect(player1, monster1) or
         pygame.sprite.collide_rect(player1, w1) or 
         pygame.sprite.collide_rect(player1, w2) or
         pygame.sprite.collide_rect(player1, w3) or
@@ -266,9 +276,10 @@ while True:
         pygame.sprite.collide_rect(player1, w13)):
         finish = True
         window.blit(lose, (200,200))
-        kick.play()
+        kick1.play()
         break
 
 
     pygame.display.update()
-    clock.tick(40)
+    clock.tick(60)
+    
